@@ -17,7 +17,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDIxYTk4YWFhYzA2ZDc4NTI2N2FkMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMjQ4OTY1OCwiZXhwIjoxNzMyNDkzMjU4fQ.vIyxef6egn_xNCkqVEhE9tE1BgVRLsXgovc9oTZCOc8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDNlN2VlMzM3NjYwYzJmNjlmNmI4ZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMjU0ODkwMSwiZXhwIjoxNzMyNTUyNTAxfQ.jdx4DszRrw4DR3tsJpEurDfiWd5MFUd7kQ14Ln5EL80",
 									"type": "string"
 								}
 							]
@@ -26,7 +26,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"111testuser\",\r\n  \"password\": \"123\",\r\n  \"role\": \"admin\"\r\n}\r\n",
+							"raw": "{\r\n  \"username\": \"testuser\",\r\n  \"password\": \"Test1234\",\r\n  \"role\": \"editor\",\r\n  \"name\": \"Ali\",\r\n  \"surname\": \"Veli\",\r\n  \"phone\": \"+90 532 123 45 67\",\r\n  \"email\": \"testuser@example.com\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -56,7 +56,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"111testuser\",\r\n  \"password\": \"123\"\r\n}\r\n",
+							"raw": "{\r\n  \"identifier\": \"testuser\",\r\n  \"password\": \"Test1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -612,6 +612,204 @@
 								"api",
 								"city-images",
 								"6743e69c52e6d847f607dd06"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "firm",
+			"item": [
+				{
+					"name": "addFirm",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"TravelGo\",\r\n  \"category\": \"Doğa Turları\",\r\n  \"description\": \"Türkiye genelinde doğa yürüyüşleri ve kamp turları düzenler.\",\r\n  \"contact\": {\r\n    \"phone\": \"+90 212 123 45 67\",\r\n    \"email\": \"info@travelgo.com\",\r\n    \"address\": \"İstanbul, Türkiye\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/firms",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"firms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allListFirms",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "updateFirms",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Adventure Plus Travel\",\r\n  \"category\": \"Macera Turları\",\r\n  \"contact\": {\r\n    \"phone\": \"+90 532 789 01 23\",\r\n    \"email\": \"contact@adventureplus.com\",\r\n    \"address\": \"Antalya, Türkiye\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/firms/6744d20edc1530dbcffeec47",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"firms",
+								"6744d20edc1530dbcffeec47"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteFirms",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/firms/6744d20edc1530dbcffeec47",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"firms",
+								"6744d20edc1530dbcffeec47"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tour",
+			"item": [
+				{
+					"name": "addTour",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Kapadokya Balon Turu\",\r\n  \"firm\": \"6744d2e8dc1530dbcffeec4f\",  // Firms koleksiyonundaki firma ObjectId'si\r\n  \"category\": \"Macera Turları\",\r\n  \"images\": [\"https://example.com/tour1.jpg\", \"https://example.com/tour2.jpg\"],\r\n  \"description\": \"Kapadokya'da eşsiz bir balon turu deneyimi.\",\r\n  \"fee\": \"2000 TL\",\r\n  \"editorNotes\": \"Balon turundan önce sabah erken kalkmayı unutmayın!\",\r\n  \"contact\": {\r\n    \"phone\": \"+90 532 456 78 90\",\r\n    \"email\": \"info@kapadokya.com\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/tours",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allListTour",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/tours",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateTours",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Güncellenmiş Kapadokya Balon Turu\",\r\n  \"fee\": \"2500 TL\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/firms/6744d252dc1530dbcffeec49",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"firms",
+								"6744d252dc1530dbcffeec49"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTours",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/tours/6744d252dc1530dbcffeec49",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tours",
+								"6744d252dc1530dbcffeec49"
 							]
 						}
 					},
