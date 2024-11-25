@@ -3,16 +3,29 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 // Kullanıcı Girişi
+// Kullanıcı Girişi
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
+  const { identifier, password } = req.body; // identifier: username, email veya phone olabilir.
 
   try {
-    const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ message: 'Kullanıcı bulunamadı!' });
+    // Kullanıcıyı bul: username, email veya phone üzerinden
+    const user = await User.findOne({
+      $or: [
+        { username: identifier },
+        { email: identifier },
+        { phone: identifier }
+      ]
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Kullanıcı bulunamadı!' });
+    }
 
     // Şifre Doğrulama
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) return res.status(401).json({ message: 'Geçersiz şifre!' });
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Geçersiz şifre!' });
+    }
 
     // JWT Token oluştur
     const token = jwt.sign(
@@ -21,29 +34,49 @@ exports.login = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.status(200).json({ message: 'Giriş başarılı!', token });
+    res.status(200).json({
+      message: 'Giriş başarılı!',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+        role: user.role
+      }
+    });
   } catch (error) {
     console.error('Giriş Hatası:', error);
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
 
+
 // Kullanıcı Ekleme
 exports.createUser = async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, email, name, surname, phone } = req.body;
 
   try {
-    // Kullanıcı var mı kontrol et
+    // Eksik alanları kontrol et
+    if (!name || !surname) {
+      return res.status(400).json({ message: 'Ad (name) ve soyad (surname) alanları zorunludur!' });
+    }
+
     const existingUser = await User.findOne({ username });
     if (existingUser) return res.status(400).json({ message: 'Bu kullanıcı zaten mevcut!' });
 
-    // Şifreyi hashle
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log('Hashlenmiş Şifre (Kayıt Anında):', hashedPassword);
+    if (email) {
+      const existingEmail = await User.findOne({ email });
+      if (existingEmail) return res.status(400).json({ message: 'Bu e-posta zaten kullanılıyor!' });
+    }
 
-    // Yeni kullanıcıyı oluştur ve kaydet
-    const user = new User({ username, password: hashedPassword, role });
-    console.log('Kaydedilecek Kullanıcı:', user);
+    if (phone) {
+      const existingPhone = await User.findOne({ phone });
+      if (existingPhone) return res.status(400).json({ message: 'Bu telefon numarası zaten kullanılıyor!' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ username, password: hashedPassword, role, email, name, surname, phone });
     await user.save();
 
     res.status(201).json({ message: 'Kullanıcı başarıyla eklendi!', user });
@@ -52,6 +85,8 @@ exports.createUser = async (req, res) => {
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
+
+
 
 // Tüm Kullanıcıları Listele (Sadece Admin)
 exports.listUsers = async (req, res) => {

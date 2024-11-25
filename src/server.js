@@ -9,6 +9,9 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const attributeRoutes = require('./routes/attributeRoutes');
 const cityRoutes = require('./routes/cityRoutes');
 const cityImageRoutes = require('./routes/cityImageRoutes');
+const firmRoutes = require('./routes/firmRoutes');
+const tourRoutes = require('./routes/tourRoutes');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -34,6 +37,8 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/attributes', attributeRoutes);
 app.use('/api/cities', cityRoutes);
 app.use('/api/city-images', cityImageRoutes);
+app.use('/api/firms', firmRoutes);
+app.use('/api/tours', tourRoutes);
 
 
 app.listen(PORT, () => {
