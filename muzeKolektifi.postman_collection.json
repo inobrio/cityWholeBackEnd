@@ -1,0 +1,623 @@
+{
+	"info": {
+		"_postman_id": "1237059b-6263-4c3e-bd20-4264fdaefaf7",
+		"name": "muzeKolektifi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31313966"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "userCreate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDIxYTk4YWFhYzA2ZDc4NTI2N2FkMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMjQ4OTY1OCwiZXhwIjoxNzMyNDkzMjU4fQ.vIyxef6egn_xNCkqVEhE9tE1BgVRLsXgovc9oTZCOc8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"111testuser\",\r\n  \"password\": \"123\",\r\n  \"role\": \"admin\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userLogin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"111testuser\",\r\n  \"password\": \"123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "country",
+			"item": [
+				{
+					"name": "countryList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/countries",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"countries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "specificCountry",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/countries/DE",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"countries",
+								"DE"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCountry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Almanya\",\r\n  \"code\": \"DE\",\r\n  \"cities\": [\"Berlin\", \"Münih\", \"Hamburg\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/countries",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"countries"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "allListCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Test\",\r\n  \"description\": \"Test kategorinin açıklaması.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Güncellenmiş Kategori\",\r\n  \"description\": \"Güncellenmiş açıklama.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/categories/6743dc44f8a553fff0306439",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"categories",
+								"6743dc44f8a553fff0306439"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCategory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/categories/6743dbedf8a553fff0306434",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"categories",
+								"6743dbedf8a553fff0306434"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "attributes",
+			"item": [
+				{
+					"name": "allListAttributes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/attributes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"attributes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addAttributes",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Yeni Özellik\",\r\n  \"description\": \"Yeni özelliğin açıklaması.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/attributes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"attributes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateAttributes",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Güncellenmiş Özellik\",\r\n  \"description\": \"Güncellenmiş açıklama.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/attributes/6743dddd78b223c00326ff6e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"attributes",
+								"6743dddd78b223c00326ff6e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAttributes",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/attributes/6743ddaa78b223c00326ff67",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"attributes",
+								"6743ddaa78b223c00326ff67"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "city",
+			"item": [
+				{
+					"name": "addCites",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Antalya\",\r\n  \"countryId\": \"6743da9c68162877a381482b\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/cities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listAllCites",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/cities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "specificCountryCites",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/cities/country/6743da9c68162877a381482b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"cities",
+								"country",
+								"6743da9c68162877a381482b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "putCities",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Berlin\",\r\n  \"countryId\": \"6743da9c68162877a381482b\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/cities/6743e3f7ff8535140886be83",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"cities",
+								"6743e3f7ff8535140886be83"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCities",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/cities/6743e325ff8535140886be76",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"cities",
+								"6743e325ff8535140886be76"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cityImage",
+			"item": [
+				{
+					"name": "addCityImage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"country\": \"6743d97867b012d59e212ecc\",  // `countries` koleksiyonundaki Türkiye'nin ObjectId'si\r\n  \"city\": \"6743e284d4e78a10c8fe774a\",     // `cities` koleksiyonundaki İstanbul'un ObjectId'si\r\n  \"category\": \"6743db76b3be1b8675deb1fb\", // `categories` koleksiyonundaki kategori ObjectId'si (ör. Tarihi Alanlar)\r\n  \"title\": \"Ayasofya\",\r\n  \"images\": [\r\n    \"https://example.com/image1.jpg\",\r\n    \"https://example.com/image2.jpg\"\r\n  ],\r\n  \"description\": \"Tarihi ve kültürel bir yapı.\",\r\n  \"address\": {\r\n    \"text\": \"Sultanahmet, İstanbul\",\r\n    \"mapUrl\": \"https://maps.google.com/example\"\r\n  },\r\n  \"fee\": \"100 TL\",\r\n  \"editorNotes\": \"Ayasofya'da rehberli tur yapabilirsiniz.\",\r\n  \"events\": [\"Rehberli Tur\", \"Sanat Sergisi\"],\r\n  \"features\": [\"6743dcff50a93b683112c8a9\", \"6743dcff50a93b683112c8a8\"], // `attributes` koleksiyonundaki özelliklerin ObjectId'leri\r\n  \"contact\": {\r\n    \"phone\": \"+90 212 123 45 67\",\r\n    \"email\": \"info@ayasofya.com\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/city-images",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"city-images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allListCityImage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/city-images",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"city-images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "specificListCityImage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/city-images/6743e69c52e6d847f607dd06",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"city-images",
+								"6743e69c52e6d847f607dd06"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCityImage",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Güncellenmiş Ayasofya\",\r\n  \"fee\": \"200 TL\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/city-images/6743e69c52e6d847f607dd06",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"city-images",
+								"6743e69c52e6d847f607dd06"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCityImage",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/city-images/6743e69c52e6d847f607dd06",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"city-images",
+								"6743e69c52e6d847f607dd06"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

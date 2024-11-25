@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const User = require('./models/User'); // Model yolunuza göre ayarlayın
+const User = require('../models/user'); 
 require('dotenv').config();
 
 async function updatePassword() {
