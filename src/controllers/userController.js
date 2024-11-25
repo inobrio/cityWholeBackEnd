@@ -1,6 +1,6 @@
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');
+const User = require('../models/user'); // User modelinizi doğru yoldan alın
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Kullanıcı Girişi
 exports.login = async (req, res) => {
@@ -8,37 +8,27 @@ exports.login = async (req, res) => {
 
   try {
     const user = await User.findOne({ username });
-    if (!user) {
-      console.log('Kullanıcı bulunamadı');
-      return res.status(404).json({ message: 'Kullanıcı bulunamadı!' });
-    }
+    if (!user) return res.status(404).json({ message: 'Kullanıcı bulunamadı!' });
 
-    console.log('Girilen Şifre:', password);
-    console.log('Veritabanındaki Hash:', user.password);
-
+    // Şifre Doğrulama
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log('Doğrulama Sonucu:', isPasswordValid);
+    if (!isPasswordValid) return res.status(401).json({ message: 'Geçersiz şifre!' });
 
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Şifre yanlış!' });
-    }
-
+    // JWT Token oluştur
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    console.log('Token:', token);
-
     res.status(200).json({ message: 'Giriş başarılı!', token });
   } catch (error) {
-    console.error('Hata:', error);
+    console.error('Giriş Hatası:', error);
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
 
-// Kullanıcı Ekleme (Sadece Admin)
+// Kullanıcı Ekleme
 exports.createUser = async (req, res) => {
   const { username, password, role } = req.body;
 
@@ -47,25 +37,37 @@ exports.createUser = async (req, res) => {
     const existingUser = await User.findOne({ username });
     if (existingUser) return res.status(400).json({ message: 'Bu kullanıcı zaten mevcut!' });
 
-    // Şifreyi hashle ve kullanıcıyı oluştur
+    // Şifreyi hashle
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log('Hashlenmiş Şifre (Kayıt Anında):', hashedPassword);
+
+    // Yeni kullanıcıyı oluştur ve kaydet
     const user = new User({ username, password: hashedPassword, role });
+    console.log('Kaydedilecek Kullanıcı:', user);
     await user.save();
 
     res.status(201).json({ message: 'Kullanıcı başarıyla eklendi!', user });
   } catch (error) {
+    console.error('Kullanıcı Ekleme Hatası:', error);
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
 
-// Kullanıcı Güncelleme (Sadece Admin)
+// Tüm Kullanıcıları Listele (Sadece Admin)
+exports.listUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, { password: 0 }); // Şifreyi yanıtlamaz
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Kullanıcı Listeleme Hatası:', error);
+    res.status(500).json({ message: 'Bir hata oluştu', error });
+  }
+};
+
+// Kullanıcı Güncelleme
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
   const { username, password, role } = req.body;
-
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Yetkiniz yok!' });
-  }
 
   try {
     const updatedData = {};
@@ -78,24 +80,7 @@ exports.updateUser = async (req, res) => {
 
     res.status(200).json({ message: 'Kullanıcı başarıyla güncellendi!', updatedUser });
   } catch (error) {
-    res.status(500).json({ message: 'Bir hata oluştu', error });
-  }
-};
-
-// Kullanıcı Silme (Sadece Admin)
-exports.deleteUser = async (req, res) => {
-  const { id } = req.params;
-
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Yetkiniz yok!' });
-  }
-
-  try {
-    const deletedUser = await User.findByIdAndDelete(id);
-    if (!deletedUser) return res.status(404).json({ message: 'Kullanıcı bulunamadı!' });
-
-    res.status(200).json({ message: 'Kullanıcı başarıyla silindi!', deletedUser });
-  } catch (error) {
+    console.error('Kullanıcı Güncelleme Hatası:', error);
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };

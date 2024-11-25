@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
 
 async function testPassword() {
-  const plainPassword = '123'; // Girilen şifre
-  const hashedPassword = '$2b$10$WzJD5SWz5wkjXhh7Sh0B..D3039tVQH0kwozmucaNjiEkxlC7KE/u'; // Veritabanındaki hash
+  const plainPassword = '123'; // Şifre
+  const hashedPassword = '$2b$10$xDst/5AmwULySAbBS9uXlOkE4yB18kjY9pEiV0AxFXrHslEeaftBe'; // Yeni hash
 
   const isValid = await bcrypt.compare(plainPassword, hashedPassword);
-  console.log('Şifre doğrulandı mı?:', isValid);
+  console.log('Şifre Doğru Mu?:', isValid);
 }
 
 testPassword();

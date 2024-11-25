@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const cors = require('cors');
 
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes.js');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -12,8 +12,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
-// Middleware ile Auth Route'u ekle
-app.use('/api/users', userRoutes);
+
 
 // MongoDB Bağlantısı
 mongoose.connect(process.env.MONGO_URI)
@@ -23,6 +22,9 @@ mongoose.connect(process.env.MONGO_URI)
 app.get('/', (req, res) => {
   res.send('CityHall Backend is running!');
 });
+
+// Middleware ile Auth Route'u ekle
+app.use('/api/users', userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

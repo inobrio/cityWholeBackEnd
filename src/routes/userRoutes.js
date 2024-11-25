@@ -1,24 +1,23 @@
 const express = require('express');
-const {
-  login,
-  createUser,
-  updateUser,
-  deleteUser,
-} = require('../controllers/userController');
-const { authenticateToken } = require('../middleware/authMiddleware');
+const { 
+  login, 
+  createUser, 
+  listUsers, 
+  updateUser 
+} = require('../controllers/userController'); // Controller'ı doğru yoldan alın
 
 const router = express.Router();
 
 // Giriş Yapma
 router.post('/login', login);
 
-// Kullanıcı Ekleme
+// Yeni Kullanıcı Ekleme (Sadece Admin)
 router.post('/create', createUser);
 
-// Kullanıcı Güncelleme
-router.put('/update/:id', authenticateToken, updateUser);
+// Tüm Kullanıcıları Listeleme (Sadece Admin)
+router.get('/', listUsers);
 
-// Kullanıcı Silme
-router.delete('/delete/:id', authenticateToken, deleteUser);
+// Kullanıcı Güncelleme (Sadece Admin)
+router.put('/update/:id', updateUser);
 
 module.exports = router;
