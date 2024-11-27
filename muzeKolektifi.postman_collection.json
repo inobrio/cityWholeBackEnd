@@ -262,111 +262,6 @@
 			]
 		},
 		{
-			"name": "attributes",
-			"item": [
-				{
-					"name": "allListAttributes",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/attributes",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"attributes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "addAttributes",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Yeni Özellik\",\r\n  \"description\": \"Yeni özelliğin açıklaması.\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/api/attributes",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"attributes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updateAttributes",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Güncellenmiş Özellik\",\r\n  \"description\": \"Güncellenmiş açıklama.\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/api/attributes/6743dddd78b223c00326ff6e",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"attributes",
-								"6743dddd78b223c00326ff6e"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deleteAttributes",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/attributes/6743ddaa78b223c00326ff67",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"attributes",
-								"6743ddaa78b223c00326ff67"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "city",
 			"item": [
 				{
@@ -812,6 +707,315 @@
 								"6744d252dc1530dbcffeec49"
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "settings",
+			"item": [
+				{
+					"name": "evetType",
+					"item": [
+						{
+							"name": "allListEventType_CATEGORY",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "eventType_CATEGORY",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Konser\",\r\n  \"description\": \"Canlı müzik etkinlikleri.\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/event-categories/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"event-categories",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "eventTpyeDelete",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "eventTypeUpdate",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n     \"name\": \"Konser\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/event-categories/update/67465f12edbf0d724b9dcdc3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"event-categories",
+										"update",
+										"67465f12edbf0d724b9dcdc3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "attributes",
+					"item": [
+						{
+							"name": "allListAttributes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/api/attributes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"attributes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addAttributes",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Yeni Özellik\",\r\n  \"description\": \"Yeni özelliğin açıklaması.\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/attributes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"attributes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateAttributes",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Güncellenmiş Özellik\",\r\n  \"description\": \"Güncellenmiş açıklama.\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/attributes/6743dddd78b223c00326ff6e",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"attributes",
+										"6743dddd78b223c00326ff6e"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteAttributes",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/api/attributes/6743ddaa78b223c00326ff67",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"attributes",
+										"6743ddaa78b223c00326ff67"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "notification",
+					"item": [
+						{
+							"name": "onePushNotification",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"token\": \"<DEVICE_TOKEN>\",\r\n  \"title\": \"Yeni Etkinlik!\",\r\n  \"message\": \"Şehrinizde harika bir konser etkinliği var. Kaçırmayın!\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/notifications/send",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"notifications",
+										"send"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "event",
+			"item": [
+				{
+					"name": "allListEvent",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "addEvent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Yaz Festivali\",\r\n  \"description\": \"Yaz aylarında düzenlenen bir açık hava festivali.\",\r\n  \"startDate\": \"2024-07-01\",\r\n  \"endDate\": \"2024-07-03\",\r\n  \"city\": \"6743e276d4e78a10c8fe765d\",\r\n  \"category\": \"67465f12edbf0d724b9dcdc3\",\r\n  \"address\": \"Harbiye Açıkhava Tiyatrosu\",\r\n  \"contactInfo\": \"info@festival.com\",\r\n  \"price\": 0,\r\n  \"attributes\": [\"6743dcff50a93b683112c8a4\", \"6743dcff50a93b683112c8a6\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/events/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"events",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eventUpdate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Bıcı Bıcı Yeme Şenliği\",\r\n  \"description\": \"Kış sezonunda düzenlenen bir festival.\",\r\n  \"startDate\": \"2024-12-01\",\r\n  \"endDate\": \"2024-12-03\",\r\n  \"city\": \"6743e276d4e78a10c8fe765d\",\r\n  \"category\": \"67465f12edbf0d724b9dcdc3\",\r\n  \"address\": \"Taksim Meydanı\",\r\n  \"contactInfo\": \"info@kisfestivali.com\",\r\n  \"price\": 100,\r\n  \"attributes\": [\"6743dcff50a93b683112c8a4\", \"6743dcff50a93b683112c8a6\"]\r\n\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/events/update/674660915d12224d1e42f5a5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"events",
+								"update",
+								"674660915d12224d1e42f5a5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteEvent",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
