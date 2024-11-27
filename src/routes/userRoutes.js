@@ -3,7 +3,7 @@ const {
   login, 
   createUser, 
   listUsers, 
-  updateUser 
+  updateUser,
 } = require('../controllers/userController'); // Controller'ı doğru yoldan alın
 
 const router = express.Router();

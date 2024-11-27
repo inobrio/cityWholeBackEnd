@@ -5,13 +5,18 @@ const Category = require('../models/category');
 const Attribute = require('../models/attribute'); // Özelliklerin referansı için
 
 // Yeni Kent İmgesi Ekle
+const CityImage = require('../models/cityImage');
+const Country = require('../models/country');
+const City = require('../models/city');
+const Category = require('../models/category');
+const Attribute = require('../models/attribute'); // Özelliklerin referansı için
+
 exports.addCityImage = async (req, res) => {
   const {
     country,
     city,
     category,
     title,
-    images,
     description,
     address,
     fee,
@@ -31,12 +36,15 @@ exports.addCityImage = async (req, res) => {
     if (!existingCity) return res.status(400).json({ message: 'Geçerli bir şehir seçmelisiniz!' });
     if (!existingCategory) return res.status(400).json({ message: 'Geçerli bir kategori seçmelisiniz!' });
 
+    // Yüklenen dosyanın yolunu al
+    const uploadedImages = req.files.map(file => file.path); // Multer ile gelen dosyalar
+
     const cityImage = new CityImage({
       country,
       city,
       category,
       title,
-      images,
+      images: uploadedImages, // Yüklenen dosyaların yolları
       description,
       address,
       fee,
@@ -49,9 +57,11 @@ exports.addCityImage = async (req, res) => {
     await cityImage.save();
     res.status(201).json({ message: 'Kent İmgesi başarıyla eklendi!', cityImage });
   } catch (error) {
+    console.error('Hata:', error);
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
+
 
 // Kent İmgelerini Listele
 exports.getCityImages = async (req, res) => {

@@ -11,6 +11,9 @@ const cityRoutes = require('./routes/cityRoutes');
 const cityImageRoutes = require('./routes/cityImageRoutes');
 const firmRoutes = require('./routes/firmRoutes');
 const tourRoutes = require('./routes/tourRoutes');
+const eventCategoryRoutes = require('./routes/eventCategoryRoutes');
+const eventRoutes = require('./routes/eventRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -39,6 +42,10 @@ app.use('/api/cities', cityRoutes);
 app.use('/api/city-images', cityImageRoutes);
 app.use('/api/firms', firmRoutes);
 app.use('/api/tours', tourRoutes);
+app.use('/api/event-categories', eventCategoryRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/notifications', notificationRoutes);
+
 
 
 app.listen(PORT, () => {
