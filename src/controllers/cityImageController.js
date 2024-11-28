@@ -4,13 +4,6 @@ const City = require('../models/city');
 const Category = require('../models/category');
 const Attribute = require('../models/attribute'); // Özelliklerin referansı için
 
-// Yeni Kent İmgesi Ekle
-const CityImage = require('../models/cityImage');
-const Country = require('../models/country');
-const City = require('../models/city');
-const Category = require('../models/category');
-const Attribute = require('../models/attribute'); // Özelliklerin referansı için
-
 exports.addCityImage = async (req, res) => {
   const {
     country,

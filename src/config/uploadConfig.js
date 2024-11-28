@@ -4,7 +4,7 @@ const path = require('path');
 // Depolama Ayarları
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads/image')); // Fotoğraflar uploads klasörüne kaydedilecek
+    cb(null, path.join(__dirname, '../uploads/image')); 
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
