@@ -40,4 +40,40 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Ülke Silme
+router.delete('/:id', async (req, res) => {
+  try {
+    const country = await Country.findByIdAndDelete(req.params.id);
+    if (!country) return res.status(404).json({ message: 'Ülke bulunamadı!' });
+
+    res.status(200).json({ message: 'Ülke başarıyla silindi!', country });
+  } catch (error) {
+    res.status(500).json({ message: 'Bir hata oluştu', error });
+  }
+});
+
+// Ülke Güncelleme
+router.put('/:code', async (req, res) => {
+  const { name, cities } = req.body;
+
+  try {
+    // `code` alanına göre ülke bul ve güncelle
+    const updatedCountry = await Country.findOneAndUpdate(
+      { code: req.params.code },
+      { name, cities },
+      { new: true }
+    );
+
+    if (!updatedCountry) {
+      return res.status(404).json({ message: 'Ülke bulunamadı!' });
+    }
+
+    res.status(200).json({ message: 'Ülke başarıyla güncellendi!', updatedCountry });
+  } catch (error) {
+    console.error('Ülke Güncelleme Hatası:', error);
+    res.status(500).json({ message: 'Bir hata oluştu', error });
+  }
+});
+
+
 module.exports = router;

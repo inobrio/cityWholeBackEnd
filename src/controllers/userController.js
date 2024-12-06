@@ -162,3 +162,22 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
+
+// Kullanıcı Silme
+exports.deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedUser = await User.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'Kullanıcı bulunamadı!' });
+    }
+
+    res.status(200).json({ message: 'Kullanıcı başarıyla silindi!', deletedUser });
+  } catch (error) {
+    console.error('Kullanıcı Silme Hatası:', error);
+    res.status(500).json({ message: 'Bir hata oluştu', error });
+  }
+};
+
+

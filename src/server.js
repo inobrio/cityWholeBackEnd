@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const cors = require('cors');
+const path = require('path');
+
+
 
 const userRoutes = require('./routes/userRoutes.js');
 const countryRoutes = require('./routes/countryRoutes.js')
@@ -45,6 +48,15 @@ app.use('/api/tours', tourRoutes);
 app.use('/api/event-categories', eventCategoryRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/notifications', notificationRoutes);
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static('uploads'));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'src', 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+
 
 
 

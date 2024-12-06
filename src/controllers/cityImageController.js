@@ -4,6 +4,7 @@ const City = require('../models/city');
 const Category = require('../models/category');
 const Attribute = require('../models/attribute'); // Özelliklerin referansı için
 
+// Kent İmgesi Ekle
 exports.addCityImage = async (req, res) => {
   const {
     country,
@@ -16,11 +17,11 @@ exports.addCityImage = async (req, res) => {
     editorNotes,
     events,
     features,
-    contact
+    contact,
   } = req.body;
 
   try {
-    // Ülkenin, şehrin ve kategorinin var olup olmadığını kontrol et
+    // Ülke, şehir ve kategori varlığını kontrol et
     const existingCountry = await Country.findById(country);
     const existingCity = await City.findById(city);
     const existingCategory = await Category.findById(category);
@@ -29,22 +30,27 @@ exports.addCityImage = async (req, res) => {
     if (!existingCity) return res.status(400).json({ message: 'Geçerli bir şehir seçmelisiniz!' });
     if (!existingCategory) return res.status(400).json({ message: 'Geçerli bir kategori seçmelisiniz!' });
 
-    // Yüklenen dosyanın yolunu al
-    const uploadedImages = req.files.map(file => file.path); // Multer ile gelen dosyalar
+    // Kapak resmi ve galeri görselleri kontrolü
+    const coverImage = req.files.coverImage?.[0]?.path;
+    const galleryImages = req.files.galleryImages?.map((file) => file.path) || [];
+
+    if (!coverImage) return res.status(400).json({ message: 'Kapak resmi yüklenmesi gerekiyor!' });
+    if (galleryImages.length > 6) return res.status(400).json({ message: 'Maksimum 6 galeri görseli yüklenebilir!' });
 
     const cityImage = new CityImage({
       country,
       city,
       category,
       title,
-      images: uploadedImages, // Yüklenen dosyaların yolları
       description,
-      address,
+      address: JSON.parse(address), // Adresi JSON formatında işlemek için
       fee,
       editorNotes,
       events,
-      features,
-      contact
+      features, // Özelliklerin ID'leri
+      contact: JSON.parse(contact), // İletişim bilgilerini JSON formatında işlemek için
+      coverImage,
+      galleryImages,
     });
 
     await cityImage.save();
@@ -54,7 +60,6 @@ exports.addCityImage = async (req, res) => {
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
-
 
 // Kent İmgelerini Listele
 exports.getCityImages = async (req, res) => {
@@ -95,6 +100,14 @@ exports.updateCityImage = async (req, res) => {
   const updateData = req.body;
 
   try {
+    // Güncelleme sırasında coverImage ve galleryImages'i dosyalardan al
+    if (req.files.coverImage) {
+      updateData.coverImage = req.files.coverImage[0].path;
+    }
+    if (req.files.galleryImages) {
+      updateData.galleryImages = req.files.galleryImages.map((file) => file.path);
+    }
+
     const updatedCityImage = await CityImage.findByIdAndUpdate(id, updateData, { new: true })
       .populate('country', 'name') // Ülke adı
       .populate('city', 'name') // Şehir adı
