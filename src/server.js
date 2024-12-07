@@ -17,6 +17,9 @@ const tourRoutes = require('./routes/tourRoutes');
 const eventCategoryRoutes = require('./routes/eventCategoryRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const rotalar = require('./routes/rota.js');
+const cultureRoute = require('./routes/cultureRoute.js');
+const instagramRoutes = require('./routes/instagram.js');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -54,6 +57,10 @@ app.use('/api/notifications', notificationRoutes);
 // app.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
 // app.use('/uploads', express.static(path.join(__dirname, 'src', 'uploads')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/api/rotalar', rotalar);
+app.use('/api/culture-routes', cultureRoute);
+app.use('/instagram', instagramRoutes);
+
 
 
 

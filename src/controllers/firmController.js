@@ -54,3 +54,13 @@ exports.deleteFirm = async (req, res) => {
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
+
+exports.getCompanyCount = async (req, res) => {
+  try {
+    const count = await Firm.countDocuments();
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error('Firma sayısı alınırken hata:', error);
+    res.status(500).json({ message: 'Bir hata oluştu', error });
+  }
+};

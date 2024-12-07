@@ -5,12 +5,16 @@ const {
   getCityImageById,
   updateCityImage,
   deleteCityImage,
+  getCityImageCount
 } = require('../controllers/cityImageController');
 const upload = require('../middleware/multer'); // Multer middleware
 
 const router = express.Router();
 
 // Yeni Kent İmgesi Ekle
+
+router.get('/count', getCityImageCount);
+
 router.post(
   '/',
   upload.fields([
@@ -38,5 +42,6 @@ router.put(
 
 // Kent İmgesini Sil
 router.delete('/:id', deleteCityImage);
+
 
 module.exports = router;

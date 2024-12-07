@@ -18,6 +18,8 @@ exports.addCityImage = async (req, res) => {
     events,
     features,
     contact,
+    latitude, // Enlem
+    longitude, // Boylam
   } = req.body;
 
   try {
@@ -44,6 +46,8 @@ exports.addCityImage = async (req, res) => {
       title,
       description,
       address: JSON.parse(address), // Adresi JSON formatında işlemek için
+      latitude: Number(latitude), // Enlem
+      longitude: Number(longitude), // Boylam
       fee,
       editorNotes,
       events,
@@ -108,6 +112,14 @@ exports.updateCityImage = async (req, res) => {
       updateData.galleryImages = req.files.galleryImages.map((file) => file.path);
     }
 
+    // Enlem ve boylamı ekle
+    if (updateData.latitude) {
+      updateData.latitude = Number(updateData.latitude);
+    }
+    if (updateData.longitude) {
+      updateData.longitude = Number(updateData.longitude);
+    }
+
     const updatedCityImage = await CityImage.findByIdAndUpdate(id, updateData, { new: true })
       .populate('country', 'name') // Ülke adı
       .populate('city', 'name') // Şehir adı
@@ -122,6 +134,7 @@ exports.updateCityImage = async (req, res) => {
   }
 };
 
+
 // Kent İmgesini Sil
 exports.deleteCityImage = async (req, res) => {
   const { id } = req.params;
@@ -132,6 +145,16 @@ exports.deleteCityImage = async (req, res) => {
 
     res.status(200).json({ message: 'Kent İmgesi başarıyla silindi!', deletedCityImage });
   } catch (error) {
+    res.status(500).json({ message: 'Bir hata oluştu', error });
+  }
+};
+
+exports.getCityImageCount = async (req, res) => {
+  try {
+    const count = await CityImage.countDocuments();
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error('Hata:', error);
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };

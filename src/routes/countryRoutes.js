@@ -2,6 +2,17 @@ const express = require('express');
 const Country = require('../models/country');
 const router = express.Router();
 
+
+router.get('/count', async (req, res) => {
+  try {
+    const count = await Country.countDocuments();
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error('Ülke sayısı alınırken hata:', error);
+    res.status(500).json({ message: 'Bir hata oluştu', error });
+  }
+});
+
 // Tüm Ülkeleri Listele
 router.get('/', async (req, res) => {
   try {
@@ -39,6 +50,8 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 });
+
+
 
 // Ülke Silme
 router.delete('/:id', async (req, res) => {

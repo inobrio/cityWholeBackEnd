@@ -1,20 +1,21 @@
 const mongoose = require('mongoose');
 
+const NoktaSchema = new mongoose.Schema({
+  lat: { type: Number, required: true },
+  lon: { type: Number, required: true },
+  aciklama: { type: String }
+});
+
 const RotaSchema = new mongoose.Schema({
-    baslik: { type: String, required: true }, // Rota başlığı
-    aciklama: { type: String, required: true }, // Rota açıklaması
-    mesafe: { type: Number, required: true }, // Mesafe (ör. km cinsinden)
-    imgeler: [String], // Kent imgeleri (URL veya dosya referansı)
-    pinler: [
-        {
-            lat: { type: Number, required: true }, // Harita üzerinde enlem
-            lng: { type: Number, required: true }, // Harita üzerinde boylam
-            adres: String, // Adres metni
-        },
-    ],
-    durum: { type: String, default: 'pending' }, // 'pending', 'approved', 'rejected'
-    olusturan: { type: String, default: 'anonim' }, // Kullanıcı bilgisi (anonim ise anonim)
-    olusturulmaTarihi: { type: Date, default: Date.now },
+  rotaAdi: { type: String, required: true },
+  aciklama: { type: String },
+  baslangicNoktasi: { type: NoktaSchema, required: true },
+  bitisNoktasi: { type: NoktaSchema, required: true },
+  araNoktalar: [NoktaSchema],
+  ratings: { type: [Number], default: [] },
+  averageRating: { type: Number, default: 0 },
+  onayDurumu: { type: Boolean, default: false }, // Admin onayı
+  olusturulmaTarihi: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Rota', RotaSchema);

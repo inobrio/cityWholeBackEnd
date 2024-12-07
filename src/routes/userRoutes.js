@@ -5,12 +5,14 @@ const {
   listUsers, 
   updateUser,
   verifyEmail,
-  deleteUser
+  deleteUser,
+  getUserCount
   
 } = require('../controllers/userController'); // Controller'ı doğru yoldan alın
 
 const router = express.Router();
 
+router.get('/count', getUserCount);
 // Giriş Yapma
 router.post('/login', login);
 

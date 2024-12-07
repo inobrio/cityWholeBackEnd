@@ -22,6 +22,8 @@ const cityImageSchema = new mongoose.Schema(
       text: { type: String },
       mapUrl: { type: String },
     },
+    latitude: { type: Number },  // Enlem bilgisi
+    longitude: { type: Number }, // Boylam bilgisi
     fee: { type: String },
     editorNotes: { type: String },
     events: [{ type: String }],
