@@ -66,13 +66,13 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Ülke Güncelleme
-router.put('/:code', async (req, res) => {
+// Ülke Güncelleme
+router.put('/:id', async (req, res) => {
   const { name, cities } = req.body;
 
   try {
-    // `code` alanına göre ülke bul ve güncelle
-    const updatedCountry = await Country.findOneAndUpdate(
-      { code: req.params.code },
+    const updatedCountry = await Country.findByIdAndUpdate(
+      req.params.id,
       { name, cities },
       { new: true }
     );

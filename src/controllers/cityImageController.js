@@ -6,62 +6,115 @@ const Attribute = require('../models/attribute'); // Özelliklerin referansı i�
 
 // Kent İmgesi Ekle
 exports.addCityImage = async (req, res) => {
-  const {
-    country,
-    city,
-    category,
-    title,
-    description,
-    address,
-    fee,
-    editorNotes,
-    events,
-    features,
-    contact,
-    latitude, // Enlem
-    longitude, // Boylam
-  } = req.body;
-
   try {
-    // Ülke, şehir ve kategori varlığını kontrol et
+    // address ve contact alanlarını parse et
+    if (typeof req.body.address === 'string') {
+      req.body.address = JSON.parse(req.body.address);
+    }
+    if (typeof req.body.contact === 'string') {
+      req.body.contact = JSON.parse(req.body.contact);
+    }
+
+    const {
+      country,
+      city,
+      category,
+      title,
+      description,
+      address,
+      fee,
+      editorNotes,
+      events,
+      features,
+      contact,
+      latitude, // Enlem
+      longitude, // Boylam
+    } = req.body;
+
+    // -- Manuel ilişki kontrolleri (ülke/şehir/kategori var mı?) --
     const existingCountry = await Country.findById(country);
+    if (!existingCountry) {
+      return res.status(400).json({
+        message: 'Validation Error',
+        errors: { country: 'Geçerli bir ülke seçmelisiniz!' },
+      });
+    }
+
     const existingCity = await City.findById(city);
+    if (!existingCity) {
+      return res.status(400).json({
+        message: 'Validation Error',
+        errors: { city: 'Geçerli bir şehir seçmelisiniz!' },
+      });
+    }
+
     const existingCategory = await Category.findById(category);
+    if (!existingCategory) {
+      return res.status(400).json({
+        message: 'Validation Error',
+        errors: { category: 'Geçerli bir kategori seçmelisiniz!' },
+      });
+    }
 
-    if (!existingCountry) return res.status(400).json({ message: 'Geçerli bir ülke seçmelisiniz!' });
-    if (!existingCity) return res.status(400).json({ message: 'Geçerli bir şehir seçmelisiniz!' });
-    if (!existingCategory) return res.status(400).json({ message: 'Geçerli bir kategori seçmelisiniz!' });
-
-    // Kapak resmi ve galeri görselleri kontrolü
+    // -- Dosya kontrolleri --
     const coverImage = req.files.coverImage?.[0]?.path;
     const galleryImages = req.files.galleryImages?.map((file) => file.path) || [];
 
-    if (!coverImage) return res.status(400).json({ message: 'Kapak resmi yüklenmesi gerekiyor!' });
-    if (galleryImages.length > 6) return res.status(400).json({ message: 'Maksimum 6 galeri görseli yüklenebilir!' });
+    if (!coverImage) {
+      return res.status(400).json({
+        message: 'Validation Error',
+        errors: { coverImage: 'Kapak resmi yüklenmesi gerekiyor!' },
+      });
+    }
+    if (galleryImages.length > 6) {
+      return res.status(400).json({
+        message: 'Validation Error',
+        errors: { galleryImages: 'Maksimum 6 galeri görseli yüklenebilir!' },
+      });
+    }
 
+    // -- Model dokümanı oluştur --
     const cityImage = new CityImage({
       country,
       city,
       category,
       title,
       description,
-      address: JSON.parse(address), // Adresi JSON formatında işlemek için
-      latitude: Number(latitude), // Enlem
-      longitude: Number(longitude), // Boylam
+      address,
+      latitude: Number(latitude),
+      longitude: Number(longitude),
       fee,
       editorNotes,
       events,
-      features, // Özelliklerin ID'leri
-      contact: JSON.parse(contact), // İletişim bilgilerini JSON formatında işlemek için
+      features,
+      contact,
       coverImage,
       galleryImages,
     });
 
+    // -- Kaydet (Mongoose validasyonları tetiklenir) --
     await cityImage.save();
-    res.status(201).json({ message: 'Kent İmgesi başarıyla eklendi!', cityImage });
+
+    return res.status(201).json({
+      message: 'Kent İmgesi başarıyla eklendi!',
+      cityImage,
+    });
   } catch (error) {
+    // Mongoose Validation Error
+    if (error.name === 'ValidationError') {
+      const errors = {};
+      for (const field in error.errors) {
+        errors[field] = error.errors[field].message;
+      }
+      return res.status(400).json({
+        message: 'Validation Error',
+        errors,
+      });
+    }
+
+    // Diğer hatalar
     console.error('Hata:', error);
-    res.status(500).json({ message: 'Bir hata oluştu', error });
+    return res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
 
@@ -73,9 +126,11 @@ exports.getCityImages = async (req, res) => {
       .populate('city', 'name') // Şehir adı
       .populate('category', 'name') // Kategori adı
       .populate('features'); // Özellik detayları
-    res.status(200).json(cityImages);
+
+    return res.status(200).json(cityImages);
   } catch (error) {
-    res.status(500).json({ message: 'Bir hata oluştu', error });
+    console.error('Hata:', error);
+    return res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
 
@@ -85,34 +140,45 @@ exports.getCityImageById = async (req, res) => {
 
   try {
     const cityImage = await CityImage.findById(id)
-      .populate('country', 'name') // Ülke adı
-      .populate('city', 'name') // Şehir adı
-      .populate('category', 'name') // Kategori adı
-      .populate('features'); // Özellik detayları
+      .populate('country', 'name')
+      .populate('city', 'name')
+      .populate('category', 'name')
+      .populate('features');
 
-    if (!cityImage) return res.status(404).json({ message: 'Kent İmgesi bulunamadı!' });
+    if (!cityImage) {
+      return res.status(404).json({ message: 'Kent İmgesi bulunamadı!' });
+    }
 
-    res.status(200).json(cityImage);
+    return res.status(200).json(cityImage);
   } catch (error) {
-    res.status(500).json({ message: 'Bir hata oluştu', error });
+    console.error('Hata:', error);
+    return res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
 
 // Kent İmgesini Güncelle
 exports.updateCityImage = async (req, res) => {
-  const { id } = req.params;
-  const updateData = req.body;
-
   try {
-    // Güncelleme sırasında coverImage ve galleryImages'i dosyalardan al
-    if (req.files.coverImage) {
+    // address ve contact alanlarını parse et
+    if (typeof req.body.address === 'string') {
+      req.body.address = JSON.parse(req.body.address);
+    }
+    if (typeof req.body.contact === 'string') {
+      req.body.contact = JSON.parse(req.body.contact);
+    }
+
+    const { id } = req.params;
+    const updateData = { ...req.body };
+
+    // Gelen dosyaları al
+    if (req.files?.coverImage) {
       updateData.coverImage = req.files.coverImage[0].path;
     }
-    if (req.files.galleryImages) {
+    if (req.files?.galleryImages) {
       updateData.galleryImages = req.files.galleryImages.map((file) => file.path);
     }
 
-    // Enlem ve boylamı ekle
+    // Sayısal dönüşümler
     if (updateData.latitude) {
       updateData.latitude = Number(updateData.latitude);
     }
@@ -120,20 +186,42 @@ exports.updateCityImage = async (req, res) => {
       updateData.longitude = Number(updateData.longitude);
     }
 
-    const updatedCityImage = await CityImage.findByIdAndUpdate(id, updateData, { new: true })
-      .populate('country', 'name') // Ülke adı
-      .populate('city', 'name') // Şehir adı
-      .populate('category', 'name') // Kategori adı
-      .populate('features'); // Özellik detayları
+    // Mongoose validasyonları güncellemede de çalışsın
+    const updatedCityImage = await CityImage.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true, runValidators: true }
+    )
+      .populate('country', 'name')
+      .populate('city', 'name')
+      .populate('category', 'name')
+      .populate('features');
 
-    if (!updatedCityImage) return res.status(404).json({ message: 'Kent İmgesi bulunamadı!' });
+    if (!updatedCityImage) {
+      return res.status(404).json({ message: 'Kent İmgesi bulunamadı!' });
+    }
 
-    res.status(200).json({ message: 'Kent İmgesi başarıyla güncellendi!', updatedCityImage });
+    return res.status(200).json({
+      message: 'Kent İmgesi başarıyla güncellendi!',
+      updatedCityImage,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Bir hata oluştu', error });
+    // Mongoose Validation Error
+    if (error.name === 'ValidationError') {
+      const errors = {};
+      for (const field in error.errors) {
+        errors[field] = error.errors[field].message;
+      }
+      return res.status(400).json({
+        message: 'Validation Error',
+        errors,
+      });
+    }
+
+    console.error('Hata:', error);
+    return res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
-
 
 // Kent İmgesini Sil
 exports.deleteCityImage = async (req, res) => {
@@ -141,20 +229,27 @@ exports.deleteCityImage = async (req, res) => {
 
   try {
     const deletedCityImage = await CityImage.findByIdAndDelete(id);
-    if (!deletedCityImage) return res.status(404).json({ message: 'Kent İmgesi bulunamadı!' });
+    if (!deletedCityImage) {
+      return res.status(404).json({ message: 'Kent İmgesi bulunamadı!' });
+    }
 
-    res.status(200).json({ message: 'Kent İmgesi başarıyla silindi!', deletedCityImage });
+    return res.status(200).json({
+      message: 'Kent İmgesi başarıyla silindi!',
+      deletedCityImage,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Bir hata oluştu', error });
+    console.error('Hata:', error);
+    return res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
 
+// Toplam Kent İmgesi Sayısı
 exports.getCityImageCount = async (req, res) => {
   try {
     const count = await CityImage.countDocuments();
-    res.status(200).json({ count });
+    return res.status(200).json({ count });
   } catch (error) {
     console.error('Hata:', error);
-    res.status(500).json({ message: 'Bir hata oluştu', error });
+    return res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 };
