@@ -1,0 +1,16 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ortam Dosyaları
+.env
+
+# Sistem Dosyaları
+.DS_Store
+Thumbs.db
+
+# Log Dosyaları
+logs
+*.log
