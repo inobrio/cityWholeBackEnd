@@ -65,16 +65,24 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Ülke Güncelleme
+
 // Ülke Güncelleme
 router.put('/:id', async (req, res) => {
-  const { name, cities } = req.body;
+  const { name, code, cities } = req.body; 
 
   try {
+    // 'code' alanının benzersizliğini kontrol et
+    if (code) {
+      const existingCountry = await Country.findOne({ code, _id: { $ne: req.params.id } });
+      if (existingCountry) {
+        return res.status(400).json({ message: 'Bu ülke kodu zaten kullanılıyor!' });
+      }
+    }
+
     const updatedCountry = await Country.findByIdAndUpdate(
       req.params.id,
-      { name, cities },
-      { new: true }
+      { name, code, cities }, 
+      { new: true, runValidators: true } 
     );
 
     if (!updatedCountry) {
@@ -87,6 +95,7 @@ router.put('/:id', async (req, res) => {
     res.status(500).json({ message: 'Bir hata oluştu', error });
   }
 });
+
 
 
 module.exports = router;

@@ -1,9 +1,11 @@
-const User = require('../models/user'); // User modelinizi doğru yoldan alın
+const User = require('../models/user'); 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const sendVerificationEmail = require('../utils/sendVerificationEmail');
+const baseURL = process.env.BASE_URL
+
 
 // Kullanıcı Girişi
 exports.login = async (req, res) => {
@@ -127,7 +129,7 @@ exports.createUser = async (req, res) => {
     await user.save();
 
     // Doğrulama e-postasını gönder
-    const verificationUrl = `http://localhost:5000/api/users/verify-email/${emailVerificationToken}`;
+    const verificationUrl = `${baseURL}api/users/verify-email/${emailVerificationToken}`;
     await sendVerificationEmail(email, 'E-posta Doğrulama', `<a href="${verificationUrl}">${verificationUrl}</a>`);
 
     res.status(201).json({ message: 'Kullanıcı başarıyla eklendi ve doğrulama e-postası gönderildi!', user });

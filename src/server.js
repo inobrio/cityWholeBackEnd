@@ -5,7 +5,6 @@ const cors = require('cors');
 const path = require('path');
 
 
-
 const userRoutes = require('./routes/userRoutes.js');
 const countryRoutes = require('./routes/countryRoutes.js')
 const categoryRoutes = require('./routes/categoryRoutes');
@@ -27,8 +26,6 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 app.use(cors());
-
-
 
 // MongoDB Bağlantısı
 mongoose.connect(process.env.MONGO_URI)
@@ -60,12 +57,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/rotalar', rotalar);
 app.use('/api/culture-routes', cultureRoute);
 app.use('/instagram', instagramRoutes);
-
-
-
-
-
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
